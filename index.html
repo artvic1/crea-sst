@@ -1,726 +1,665 @@
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CREA SST | Seguridad y Salud en el Trabajo</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <style>
-            :root {
-                --primary: #378D30;
-                --secondary: #359883;
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariana Ospina | Transformando Seguridad en Bienestar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #378D30;
+            --secondary: #359883;
+            --accent: #2ECC71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: white;
+        }
+
+        /* Logo Animation */
+        .logo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-container.shrink {
+            width: auto;
+            height: auto;
+            padding: 10px 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .logo-container.shrink .company-name {
+            opacity: 1 !important;
+            display: block;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            opacity: 0;
+            transform: scale(0) rotate(180deg);
+            animation: logoReveal 2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+            filter: drop-shadow(0 0 30px rgba(55, 141, 48, 0.5));
+        }
+
+        .logo-container.shrink .logo {
+            width: 40px;
+            height: 40px;
+            animation: none;
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+
+        .company-name {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-top: 2rem;
+            opacity: 0;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: nameReveal 1.5s ease-out 2s forwards, gradientShift 3s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(55, 141, 48, 0.3);
+        }
+
+        .logo-container.shrink .company-name {
+            font-size: 1.7rem;
+            margin-top: 0;
+            margin-left: 10px;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-top: 0rem;
+            opacity: 0;
+            color: #888;
+            animation: taglineReveal 1.2s ease-out 3.5s forwards;
+        }
+
+        .logo-container.shrink .tagline {
+            display: block;
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-left: 10px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo-container .tagline {
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo-container.shrink .logo-text {
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 1s ease-out;
+            padding-top: 100vh;
+        }
+
+        .main-content.show {
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 100px;
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(55, 141, 48, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(55, 141, 48, 0.2);
+        }
+
+        .service-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            transform: rotate(0deg);
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        /* Differentiator Section */
+        .differentiator {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .differentiator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: patternMove 20s linear infinite;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .contact-cta {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .contact-cta:hover::before {
+            left: 100%;
+        }
+
+        .contact-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        @keyframes logoReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(180deg);
             }
 
-            @keyframes fade-in {
-                from { opacity: 0; }
-                to { opacity: 1; }
+            60% {
+                transform: scale(1.2) rotate(10deg);
             }
 
-            @keyframes fade-in-up {
-                from { 
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to { 
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
             }
+        }
 
-            .animate-fade-in {
-                animation: fade-in 1s ease-out forwards;
-            }
-
-            .animate-fade-in-up {
-                animation: fade-in-up 0.8s ease-out forwards;
-            }
-
-            .delay-100 {
-                animation-delay: 0.1s;
-            }
-
-            .delay-200 {
-                animation-delay: 0.2s;
-            }
-
-            .delay-300 {
-                animation-delay: 0.3s;
-            }
-
-            .scroll-animate {
+        @keyframes nameReveal {
+            0% {
                 opacity: 0;
                 transform: translateY(30px);
-                transition: all 0.6s ease-out;
             }
 
-            .scroll-animate.animated {
+            100% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                scroll-behavior: smooth;
-            }
-            
-            .bg-primary {
-                background-color: var(--primary);
-            }
-            
-            .text-primary {
-                color: var(--primary);
-            }
-            
-            .bg-secondary {
-                background-color: var(--secondary);
-            }
-            
-            .text-secondary {
-                color: var(--secondary);
-            }
-            
-            .border-primary {
-                border-color: var(--primary);
-            }
-            
-            .nav-link {
-                position: relative;
-            }
-            
-            .nav-link::after {
-                content: '';
-                position: absolute;
-                width: 0;
-                height: 2px;
-                bottom: -2px;
-                left: 0;
-                background-color: white;
-                transition: width 0.3s ease;
-            }
-            
-            .nav-link:hover::after {
-                width: 100%;
-            }
-            
-            .service-card {
-                transition: all 0.3s ease;
-                transform: translateY(0);
-            }
-            
-            .service-card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            }
-            
-            .benefit-item {
-                transition: all 0.3s ease;
-            }
-            
-            .benefit-item:hover {
-                transform: scale(1.05);
-            }
-            
-            .testimonial-card {
+        }
+
+        @keyframes taglineReveal {
+            0% {
                 opacity: 0;
                 transform: translateY(20px);
-                transition: all 0.5s ease;
             }
-            
-            .testimonial-card.visible {
+
+            100% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            
-            .floating-btn {
-                animation: pulse 2s infinite;
-            }
-            
-            @keyframes pulse {
-                0% {
-                    box-shadow: 0 0 0 0 rgba(55, 141, 48, 0.7);
-                }
-                70% {
-                    box-shadow: 0 0 0 15px rgba(55, 141, 48, 0);
-                }
-                100% {
-                    box-shadow: 0 0 0 0 rgba(55, 141, 48, 0);
-                }
-            }
-            
-            .hero {
-                background: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-                background-size: cover;
-                background-position: center;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Navegación -->
-        <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
-            <nav class="container mx-auto px-6 py-4">
-                <div class="flex justify-between items-center">
-                    <a href="#" class="flex items-center group">
-                        <img src="CREA-LOGO.png" alt="CREA SST Logo" class="h-10 mr-3 transition-transform group-hover:scale-110">
-                    </a>
-                    
-                    <!-- Menú para desktop -->
-                    <div class="hidden md:flex items-center space-x-6">
-                        <a href="#inicio" class="nav-link text-gray-700 hover:text-primary font-medium transition-all">Inicio</a>
-                        <a href="#servicios" class="nav-link text-gray-700 hover:text-primary font-medium transition-all">Servicios</a>
-                        <a href="#beneficios" class="nav-link text-gray-700 hover:text-primary font-medium transition-all">Beneficios</a>
-                        <a href="#testimonios" class="nav-link text-gray-700 hover:text-primary font-medium transition-all">Casos de Éxito</a>
-                        <a href="#contacto" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-full hover:shadow-lg transition-all transform hover:-translate-y-0.5">Contacto</a>
-                    </div>
-                    
-                    <!-- Botón menú móvil -->
-                    <div class="md:hidden">
-                        <button id="menu-btn" class="text-gray-700 focus:outline-none">
-                            <i class="fas fa-bars text-2xl"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Menú móvil -->
-                <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
-                    <a href="#inicio" class="block py-2 text-gray-700 hover:text-primary transition">Inicio</a>
-                    <a href="#servicios" class="block py-2 text-gray-700 hover:text-primary transition">Servicios</a>
-                    <a href="#beneficios" class="block py-2 text-gray-700 hover:text-primary transition">Beneficios</a>
-                    <a href="#testimonios" class="block py-2 text-gray-700 hover:text-primary transition">Testimonios</a>
-                    <a href="#contacto" class="block mt-2 bg-primary text-white px-4 py-2 rounded-md text-center hover:bg-secondary transition">Contacto</a>
-                </div>
-            </nav>
-        </header>
+        }
 
-        <!-- Sección Hero -->
-        <section id="inicio" class="relative overflow-hidden">
-            <div class="hero pt-32 pb-20 md:pt-40 md:pb-32 text-white relative z-10" style="background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center;">
-                <div class="container mx-auto px-6 text-center">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in">
-                        Transformamos <span class="text-secondary">seguridad</span> en <br class="hidden lg:block">productividad y bienestar
-                    </h1>
-                    <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-100">
-                        Soluciones integrales en SST, PESV y Psicología Organizacional para proteger y potenciar tu capital humano.
-                    </p>
-                    <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-200">
-                        <a href="#servicios" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                            Explorar Servicios <i class="fas fa-chevron-right ml-2"></i>
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes patternMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(60px, 60px);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 50;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0.1);
+            }
+
+            100% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-container.shrink {
+                width: auto;
+                height: auto;
+                padding: 8px 16px;
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .logo-container.shrink .logo {
+                width: 32px;
+                height: 32px;
+            }
+
+            .logo-container.shrink .company-name {
+                font-size: 1rem;
+                margin: 0;
+            }
+
+            .logo-container.shrink .tagline {
+                font-size: 0.7rem;
+                margin: 0;
+            }
+
+            .logo-text {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                line-height: 1.2;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Logo Animation -->
+    <div class="logo-container" id="logoContainer">
+        <div class="logo relative">
+            <img src="CREA-LOGO.png" alt="Logo CREA SST" class="relative z-10 w-full h-full object-contain">
+        </div>
+        <div class="logo-text">
+            <h1 class="company-name">Mariana Ospina</h1>
+            <p class="tagline">Transformando seguridad en bienestar</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Services Section -->
+        <section class="min-h-screen flex items-center py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2
+                        class="text-4xl md:text-5xl font-extrabold leading-tight bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
+                        ¡Lo que podemos lograr juntos!<br class="hidden md:block"> <br><i
+                            class="fa-solid fa-arrow-down"></i><br>
+                    </h2>
+                    <div class="w-20 h-1 mt-4 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
+                </div>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- SST -->
+                    <div class="service-card" data-delay="0">
+                        <div class="service-icon">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-white">Seguridad y Salud en el Trabajo</h3>
+                        <p class="text-gray-300 mb-6">Sistemas integrales para prevenir riesgos laborales y crear
+                            entornos seguros que protejan a tu equipo.</p>
+                        <div class="flex items-center text-primary font-semibold">
+                            <span>Protegemos vidas</span>
+                            <i
+                                class="fas fa-arrow-right ml-2 transform transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- PESV -->
+                    <div class="service-card" data-delay="200">
+                        <div class="service-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-white">Plan Estratégico de Seguridad Vial</h3>
+                        <p class="text-gray-300 mb-6">Estrategias especializadas para reducir riesgos viales y proteger
+                            a tus colaboradores en cada trayecto.</p>
+                        <div class="flex items-center text-primary font-semibold">
+                            <span>Caminos seguros</span>
+                            <i
+                                class="fas fa-arrow-right ml-2 transform transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Psicología -->
+                    <div class="service-card" data-delay="400">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-white">Psicología Organizacional</h3>
+                        <p class="text-gray-300 mb-6">Potenciamos el bienestar emocional y el rendimiento de tus
+                            colaboradores para crear equipos excepcionales.</p>
+                        <div class="flex items-center text-primary font-semibold">
+                            <span>Mentes prósperas</span>
+                            <i
+                                class="fas fa-arrow-right ml-2 transform transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Differentiator Section -->
+        <section class="differentiator min-h-screen flex items-center py-20 relative">
+            <div class="floating-elements">
+                <div class="floating-element" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="floating-element" style="top: 60%; left: 80%; animation-delay: 2s;"></div>
+                <div class="floating-element" style="top: 40%; left: 70%; animation-delay: 4s;"></div>
+                <div class="floating-element" style="top: 80%; left: 20%; animation-delay: 1s;"></div>
+                <div class="floating-element" style="top: 15%; left: 60%; animation-delay: 3s;"></div>
+            </div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-6xl font-bold mb-8 text-white">
+                        Somos <span class="text-yellow-300">Diferentes</span>
+                    </h2>
+
+                    <div class="text-xl mb-12 text-gray-200 leading-relaxed">
+                        <p class="mb-6">
+                            Mientras otros separan la seguridad, la prevención vial y el bienestar mental,
+                            nosotros los <strong class="text-white">integramos en una sola experiencia</strong>.
+                        </p>
+                        <p class="mb-6">
+                            No somos solo consultores. Somos <strong class="text-yellow-300">arquitectos del bienestar
+                                humano</strong>
+                            que entienden que la verdadera productividad nace cuando las personas se sienten
+                            <strong class="text-white">seguras, protegidas y valoradas</strong>.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-yellow-300 mb-2">360°</div>
+                            <p class="text-gray-200">Enfoque integral</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-yellow-300 mb-2">+10</div>
+                            <p class="text-gray-200">Años de experiencia</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-yellow-300 mb-2">100%</div>
+                            <p class="text-gray-200">Enfoque humano</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-12">
+                        <p class="text-2xl text-white mb-8 font-medium">
+                            ¿Estás listo para transformar la seguridad de tu empresa en una ventaja competitiva?
+                        </p>
+                        <a href="https://wa.me/573186017377" class="contact-cta inline-block">
+                            <i class="fab fa-whatsapp mr-2"></i>
+                            Conversemos sobre tu proyecto
                         </a>
-                        <a href="#contacto" class="bg-white hover:bg-gray-50 text-primary font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                            Solicitar Asesoría <i class="fas fa-phone-alt ml-2"></i>
-                        </a>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
 
-        <!-- Sección Servicios -->
-        <section id="servicios" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Nuestros Servicios Especializados</h2>
-                    <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Soluciones integrales para garantizar la seguridad, salud y bienestar de tus colaboradores.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Servicio 1 -->
-                    <div class="service-card group relative bg-white p-8 rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:bg-primary/20 transition-all">
-                                <i class="fas fa-hard-hat text-3xl text-primary group-hover:text-secondary transition-colors"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-4 text-gray-800 group-hover:text-primary transition-colors">Seguridad y Salud en el Trabajo</h3>
-                            <p class="text-gray-600 mb-6">Sistemas integrales para prevenir riesgos laborales y promover entornos de trabajo saludables.</p>
-                            <ul class="text-left text-gray-600 mb-8 space-y-3">
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Diagnósticos y evaluaciones
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Planes de prevención
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Capacitaciones especializadas
-                                </li>
-                            </ul>
-                            <div class="mt-8 pt-4 border-t border-gray-200">
-                                <a href="#contacto" class="inline-flex items-center justify-center text-primary font-semibold group-hover:text-secondary transition-colors">
-                                    Consultar <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Servicio 2 -->
-                    <div class="service-card group relative bg-white p-8 rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:bg-primary/20 transition-all">
-                                <i class="fas fa-car text-3xl text-primary group-hover:text-secondary transition-colors"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-4 text-gray-800 group-hover:text-primary transition-colors">Plan Estratégico de Seguridad Vial (PESV)</h3>
-                            <p class="text-gray-600 mb-6">Desarrollamos estrategias para reducir los riesgos viales asociados a las actividades de tu organización.</p>
-                            <ul class="text-left text-gray-600 mb-8 space-y-3">
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Diagnóstico de riesgos
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Capacitación a conductores
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Seguimiento y mejora continua
-                                </li>
-                            </ul>
-                            <div class="mt-8 pt-4 border-t border-gray-200">
-                                <a href="#contacto" class="inline-flex items-center justify-center text-primary font-semibold group-hover:text-secondary transition-colors">
-                                    Consultar <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Servicio 3 -->
-                    <div class="service-card group relative bg-white p-8 rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:bg-primary/20 transition-all">
-                                <i class="fas fa-brain text-3xl text-primary group-hover:text-secondary transition-colors"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-4 text-gray-800 group-hover:text-primary transition-colors">Psicología Organizacional</h3>
-                            <p class="text-gray-600 mb-6">Potenciamos el bienestar emocional y el desempeño de tus colaboradores.</p>
-                            <ul class="text-left text-gray-600 mb-8 space-y-3">
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Evaluaciones psicológicas
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Manejo del estrés laboral
-                                </li>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-primary mr-3 mt-1"></i> Desarrollo de clima organizacional
-                                </li>
-                            </ul>
-                            <div class="mt-8 pt-4 border-t border-gray-200">
-                                <a href="#contacto" class="inline-flex items-center justify-center text-primary font-semibold group-hover:text-secondary transition-colors">
-                                    Consultar <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/573186017377" class="whatsapp-btn" title="Contáctanos por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-        <!-- Sección Beneficios -->
-        <section id="beneficios" class="py-16 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">¿Por qué elegirnos?</h2>
-                    <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Ventajas competitivas que nos diferencian en el mercado</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Beneficio 1 -->
-                    <div class="benefit-item bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-                        <div class="text-4xl text-primary mb-4">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Experiencia Certificada</h3>
-                        <p class="text-gray-600">Profesionales con más de 10 años de experiencia y certificaciones internacionales.</p>
-                    </div>
-                    
-                    <!-- Beneficio 2 -->
-                    <div class="benefit-item bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-                        <div class="text-4xl text-primary mb-4">
-                            <i class="fas fa-hand-holding-heart"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Enfoque Personalizado</h3>
-                        <p class="text-gray-600">Soluciones adaptadas a las necesidades específicas de cada organización.</p>
-                    </div>
-                    
-                    <!-- Beneficio 3 -->
-                    <div class="benefit-item bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-                        <div class="text-4xl text-primary mb-4">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Resultados Medibles</h3>
-                        <p class="text-gray-600">Seguimiento constante con indicadores de desempeño y reducción de riesgos.</p>
-                    </div>
-                    
-                    <!-- Beneficio 4 -->
-                    <div class="benefit-item bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-                        <div class="text-4xl text-primary mb-4">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Soporte Continuo</h3>
-                        <p class="text-gray-600">Acompañamiento permanente y actualización constante de protocolos.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <script>
+        // Logo animation sequence
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                const logoContainer = document.getElementById('logoContainer');
+                const mainContent = document.getElementById('mainContent');
 
-        <!-- Sección Testimonios -->
-        <section id="testimonios" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Lo que dicen nuestros clientes</h2>
-                    <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Experiencias reales de empresas que han confiado en nosotros</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Testimonio 1 -->
-                    <div class="testimonial-card bg-white p-6 rounded-lg shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">A</div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-800">Alejandro Martínez</h4>
-                                <p class="text-sm text-gray-600">Gerente de Operaciones, Constructora XYZ</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"Gracias a su implementación de SST, redujimos los accidentes laborales en un 75% en el primer año. Su enfoque profesional y dedicación son incomparables."</p>
-                        <div class="mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Testimonio 2 -->
-                    <div class="testimonial-card bg-white p-6 rounded-lg shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">M</div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-800">María Fernández</h4>
-                                <p class="text-sm text-gray-600">Directora de RRHH, Empresa Logística</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"El PESV que desarrollaron para nuestra flota de vehículos ha sido fundamental para reducir siniestros viales. Su metodología es muy completa y práctica."</p>
-                        <div class="mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- Testimonio 3 -->
-                    <div class="testimonial-card bg-white p-6 rounded-lg shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">C</div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-800">Carlos Rodríguez</h4>
-                                <p class="text-sm text-gray-600">CEO, Empresa Manufacturera</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">"Los programas de psicología organizacional han transformado nuestro clima laboral. La productividad aumentó un 30% y la rotación bajó significativamente."</p>
-                        <div class="mt-4 text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                // Shrink logo container
+                logoContainer.classList.add('shrink');
 
-        <!-- Sección Contacto -->
-        <section id="contacto" class="py-16 bg-primary text-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Contáctanos</h2>
-                    <div class="w-20 h-1 bg-white mx-auto mb-6"></div>
-                    <p class="max-w-2xl mx-auto">Completa el formulario y nos pondremos en contacto contigo a la brevedad</p>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <div>
-                        <form id="contact-form" class="space-y-6">
-                            <div>
-                                <label for="name" class="block mb-2 font-medium">Nombre completo</label>
-                                <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-md bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-white placeholder-white placeholder-opacity-70" placeholder="Tu nombre">
-                                <div id="name-error" class="text-red-200 text-sm mt-1 hidden">Por favor ingresa tu nombre</div>
-                            </div>
-                            
-                            <div>
-                                <label for="email" class="block mb-2 font-medium">Correo electrónico</label>
-                                <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-md bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-white placeholder-white placeholder-opacity-70" placeholder="tu@email.com">
-                                <div id="email-error" class="text-red-200 text-sm mt-1 hidden">Por favor ingresa un email válido</div>
-                            </div>
-                            
-                            <div>
-                                <label for="phone" class="block mb-2 font-medium">Teléfono (opcional)</label>
-                                <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-md bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-white placeholder-white placeholder-opacity-70" placeholder="+57 300 123 4567">
-                            </div>
-                            
-                            <div>
-                                <label for="service" class="block mb-2 font-medium">Servicio de interés</label>
-                                <select id="service" name="service" class="w-full px-4 py-3 rounded-md bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-white">
-                                    <option value="" disabled selected>Selecciona un servicio</option>
-                                    <option value="sst">Seguridad y Salud en el Trabajo (SST)</option>
-                                    <option value="pesv">Plan Estratégico de Seguridad Vial (PESV)</option>
-                                    <option value="psicologia">Psicología Organizacional</option>
-                                    <option value="otros">Otros servicios</option>
-                                </select>
-                                <div id="service-error" class="text-red-200 text-sm mt-1 hidden">Por favor selecciona un servicio</div>
-                            </div>
-                            
-                            <div>
-                                <label for="message" class="block mb-2 font-medium">Mensaje</label>
-                                <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-md bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-white placeholder-white placeholder-opacity-70" placeholder="Cuéntanos cómo podemos ayudarte"></textarea>
-                                <div id="message-error" class="text-red-200 text-sm mt-1 hidden">Por favor ingresa tu mensaje</div>
-                            </div>
-                            
-                            <button type="submit" class="w-full bg-white text-primary font-bold py-3 px-6 rounded-md hover:bg-gray-100 transition duration-300">Enviar mensaje</button>
-                        </form>
-                    </div>
-                    
-                    <div class="flex flex-col justify-center">
-                        <div class="mb-8">
-                            <h3 class="text-2xl font-bold mb-4">Información de contacto</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-start">
-                                    <i class="fas fa-map-marker-alt mt-1 mr-4 text-xl"></i>
-                                    <p>Calle 123 #45-67, Bogotá, Colombia</p>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-phone-alt mr-4 text-xl"></i>
-                                    <p>+57 318 6017377</p>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-envelope mr-4 text-xl"></i>
-                                    <p>gerenecia@creasst.com</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-2xl font-bold mb-4">Horario de atención</h3>
-                            <div class="space-y-2">
-                                <p class="flex justify-between"><span>Lunes a Viernes:</span> <span>8:00 AM - 6:00 PM</span></p>
-                                <p class="flex justify-between"><span>Sábados:</span> <span>9:00 AM - 1:00 PM</span></p>
-                                <p class="flex justify-between"><span>Domingos:</span> <span>Cerrado</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                // Show main content
+                setTimeout(() => {
+                    mainContent.classList.add('show');
+                }, 500);
 
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-8">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <div class="flex items-center mb-4">
-                            <img src="LOGO 2.png" alt="CREA SST Logo" class="h-12 mr-3">
-                        </div>
-                        <p class="text-gray-400">Expertos en seguridad laboral, vial y bienestar organizacional para empresas comprometidas con su capital humano.</p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="font-bold mb-4">Servicios</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#servicios" class="hover:text-white transition">Seguridad y Salud en el Trabajo</a></li>
-                            <li><a href="#servicios" class="hover:text-white transition">Plan Estratégico de Seguridad Vial</a></li>
-                            <li><a href="#servicios" class="hover:text-white transition">Psicología Organizacional</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h4 class="font-bold mb-4">Enlaces útiles</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#inicio" class="hover:text-white transition">Inicio</a></li>
-                            <li><a href="#beneficios" class="hover:text-white transition">Beneficios</a></li>
-                            <li><a href="#testimonios" class="hover:text-white transition">Testimonios</a></li>
-                            <li><a href="#contacto" class="hover:text-white transition">Contacto</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h4 class="font-bold mb-4">Síguenos</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                    <p>&copy; 2023 CREA SST. Todos los derechos reservados.</p>
-                </div>
-            </div>
-        </footer>
+            }, 5500); // Wait for logo animation to complete
+        });
 
-        <!-- Botón flotante WhatsApp -->
-        <a href="https://wa.me/573186017377" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-lg floating-btn z-50">
-            <i class="fab fa-whatsapp"></i>
-        </a>
+        // Service cards animation on scroll
+        function animateServiceCards() {
+            const cards = document.querySelectorAll('.service-card');
 
-        <script>
-            // Menú móvil
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            cards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (cardPosition < windowHeight - 100) {
+                    const delay = card.dataset.delay || 0;
+                    setTimeout(() => {
+                        card.classList.add('animate');
+                    }, delay);
+                }
             });
-            
-            // Validación de formulario
-            const contactForm = document.getElementById('contact-form');
-            
-            contactForm.addEventListener('submit', function(e) {
+        }
+
+        // Scroll event listener
+        window.addEventListener('scroll', animateServiceCards);
+
+        // Initial check for service cards
+        setTimeout(() => {
+            animateServiceCards();
+        }, 5000);
+
+        // Smooth scrolling for any internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
-                let isValid = true;
-                
-                // Validar nombre
-                const name = document.getElementById('name');
-                const nameError = document.getElementById('name-error');
-                if (name.value.trim() === '') {
-                    nameError.classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    nameError.classList.add('hidden');
-                }
-                
-                // Validar email
-                const email = document.getElementById('email');
-                const emailError = document.getElementById('email-error');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email.value)) {
-                    emailError.classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    emailError.classList.add('hidden');
-                }
-                
-                // Validar servicio
-                const service = document.getElementById('service');
-                const serviceError = document.getElementById('service-error');
-                if (service.value === '') {
-                    serviceError.classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    serviceError.classList.add('hidden');
-                }
-                
-                // Validar mensaje
-                const message = document.getElementById('message');
-                const messageError = document.getElementById('message-error');
-                if (message.value.trim() === '') {
-                    messageError.classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    messageError.classList.add('hidden');
-                }
-                
-                // Si todo es válido, enviar formulario
-                if (isValid) {
-                    alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.');
-                    contactForm.reset();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-            
-            // Animación de testimonios al hacer scroll
-            const testimonialCards = document.querySelectorAll('.testimonial-card');
-            
-            function checkTestimonials() {
-                testimonialCards.forEach(card => {
-                    const cardTop = card.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
-                    
-                    if (cardTop < windowHeight - 100) {
-                        card.classList.add('visible');
-                    }
-                });
+        });
+
+        // Create additional floating elements dynamically
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            const colors = ['rgba(255,255,255,0.1)', 'rgba(55,141,48,0.2)', 'rgba(53,152,131,0.2)'];
+
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
+                element.style.animationDelay = Math.random() * 6 + 's';
+                element.style.animationDuration = (4 + Math.random() * 4) + 's';
+                container.appendChild(element);
             }
-            
-            // Ejecutar al cargar y al hacer scroll
-            window.addEventListener('load', checkTestimonials);
-            window.addEventListener('scroll', checkTestimonials);
-            
-            // Smooth scrolling mejorado
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        const headerHeight = document.querySelector('header').offsetHeight;
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                        
-                        window.scroll({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                        
-                        // Cerrar menú móvil si está abierto
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
+        }
 
-            // Scroll animations
-            function animateOnScroll() {
-                const elements = document.querySelectorAll('.scroll-animate');
-                
-                elements.forEach(element => {
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
-                    
-                    if (elementPosition < windowHeight - 100) {
-                        element.classList.add('animated');
-                    }
-                });
-            }
+        // Initialize floating elements
+        setTimeout(createFloatingElements, 5000);
+    </script>
+</body>
 
-            // Observer para animaciones
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animated');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            document.querySelectorAll('.scroll-animate').forEach(el => {
-                observer.observe(el);
-            });
-
-            // Header scroll effect
-            let lastScroll = 0;
-            window.addEventListener('scroll', () => {
-                const currentScroll = window.pageYOffset;
-                const header = document.querySelector('header');
-                
-                if (currentScroll <= 0) {
-                    header.classList.remove('scrolled');
-                    return;
-                }
-                
-                if (currentScroll > lastScroll && currentScroll > 100) {
-                    header.classList.add('scrolled');
-                } else if (currentScroll < lastScroll) {
-                    header.classList.remove('scrolled');
-                }
-                
-                lastScroll = currentScroll;
-            });
-        </script>
-    </body>
-    </html>
+</html>
